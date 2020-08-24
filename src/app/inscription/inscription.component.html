@@ -1,0 +1,53 @@
+<app-header></app-header>
+<div class="row justify-content-center">
+  <div class="col-sm-5">
+    <h2 class="justify-content-center">Lancez-vous dans l'aventure HopIn</h2>
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="form-group">
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" class="form-control" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="prenom">Prénom</label>
+        <input type="text" id="prenom" name="prenom" class="form-control" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="naissance">Date de naissance</label>
+        <input type="date" id="naissance" name="dateNaissance" class="form-control" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="email">Adresse mail</label>
+        <input type="email" id="email" name="email" class="form-control" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="adresse">Adresse</label>
+        <input type="text" id="adresse" name="adresse" class="form-control" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="code">Code postal</label>
+        <input type="text" id="code" name="code" class="form-control" [(ngModel)]="code" required
+               (input)="onChangementCode()">
+      </div>
+      <div class="form-group">
+        <label for="commune">Commune</label>
+        <select id="commune" name="commune" class="form-control" ngModel required [disabled]="!codeOk">
+          <option *ngFor="let ville of villes" [ngValue]="ville">{{ ville.nom }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="telephone">Téléphone</label>
+        <input type="text" id="telephone" name="telephone" class="form-control" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="mdp">Mot de passe</label>
+        <input type="password" id="mdp" name="motDePasse" class="form-control" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="mdp2">Confirmez votre mot de passe</label>
+        <input type="password" id="mdp2" name="motDePasse2" class="form-control" ngModel required>
+      </div>
+      <button class="btn btn-primary offset-sm-5" type="submit" [disabled]="f.invalid || !codeOk">Je m'inscris</button>
+    </form>
+    <a routerLink="/connexion">J'ai déjà un compte</a>
+  </div>
+</div>

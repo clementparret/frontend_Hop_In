@@ -1,0 +1,240 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>{{ utilisateur?.prenom }} {{ utilisateur?.nom }}</h1>
+    </div>
+    <div class="col pt-3">
+      <div>{{ utilisateurAge }} ans</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">Membre depuis le {{ utilisateur?.dateInscription | date: 'd MMMM y' }}</div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-8">
+      <div>{{ utilisateur?.email }}</div>
+      <div>{{ utilisateur?.telephone }}</div>
+      <div>{{ utilisateur?.adresse }}, {{ utilisateur?.codePostal }} {{ utilisateur?.ville?.nom }}</div>
+    </div>
+    <div class="col-4">
+      <button class="btn btn-secondary"
+              data-toggle="modal" data-target="#popupInfos">Modifier mes informations</button>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-8">
+      <h5>Description</h5>
+    </div>
+    <div class="col-4">
+      <button class="btn btn-secondary"
+              *ngIf="utilisateur?.description !== ' ' && utilisateur?.description !== ''"
+              data-toggle="modal" data-target="#popupDescription">Modifier la description</button>
+      <button class="btn btn-secondary"
+              *ngIf="utilisateur?.description === ' ' || utilisateur?.description === ''"
+              data-toggle="modal" data-target="#popupDescription">Ajouter une description</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">{{ utilisateur?.description }}</div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-8">
+      <h5>Mes voitures</h5>
+    </div>
+    <div class="col-4">
+      <button class="btn btn-secondary"
+              data-toggle="modal" data-target="#popupVoiture">Ajouter une voiture</button>
+    </div>
+  </div>
+  <ul class="list-group">
+    <li class="row list-group-item" *ngFor="let voiture of utilisateur?.voitures" [hidden]="!voiture.active">
+      <div class="col">
+        <span>{{ voiture.modele }} </span>
+        <span>({{ voiture.marque }})</span>
+        <span> - {{ voiture.couleur }}</span>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-secondary"
+              data-toggle="modal" data-target="#popupMdp">Changer de mot de passe</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Popup Description -->
+<div class="modal fade" id="popupDescription" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="onModifDescription(f)" #f="ngForm">
+        <div class="modal-header">
+          <h5 class="modal-title">Modification de la description</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+              <label for="description">Nouvelle description</label>
+              <textarea type="text" id="description" name="description" class="form-control" [ngModel]="utilisateur.description"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary"
+                  data-toggle="modal" data-target="#popupDescription">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Popup Voiture -->
+<div class="modal fade" id="popupVoiture" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="onAjouterVoiture(g)" #g="ngForm">
+        <div class="modal-header">
+          <h5 class="modal-title">Nouvelle voiture</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="modele">Modele</label>
+            <input type="text" id="modele" name="modele" class="form-control" ngModel required placeholder="308">
+          </div>
+          <div class="form-group">
+            <label for="marque">Marque</label>
+            <input type="text" id="marque" name="marque" class="form-control" ngModel required placeholder="Peugeot">
+          </div>
+          <div class="form-group">
+            <label for="couleur">Couleur</label>
+            <input type="text" id="couleur" name="couleur" class="form-control" ngModel required placeholder="Grise">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary"
+                  data-toggle="modal" data-target="#popupVoiture">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Popup Mot de passe -->
+<div class="modal fade" id="popupMdp" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="onChangerMdp(h)" #h="ngForm">
+        <div class="modal-header">
+          <h5 class="modal-title">Changement de mot de passe</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="mdpActuel">Entrez votre mot de passe actuel</label>
+            <input type="password" id="mdpActuel" name="mdpActuel" class="form-control" ngModel required>
+          </div>
+          <div class="form-group">
+            <label for="mdpNouveau1">Nouveau mot de passe</label>
+            <input type="password" id="mdpNouveau1" name="mdpNouveau1" class="form-control" ngModel required>
+          </div>
+          <div class="form-group">
+            <label for="mdpNouveau2">Confirmez le nouveau mot de passe</label>
+            <input type="password" id="mdpNouveau2" name="mdpNouveau2" class="form-control" ngModel required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary"
+                  data-toggle="modal" data-target="#popupMdp">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Popup Infos -->
+<div class="modal fade" id="popupInfos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="onChangerInfos(i)" #i="ngForm">
+        <div class="modal-header">
+          <h5 class="modal-title">Modification de mes informations</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" id="nom" name="nom" class="form-control" [ngModel]="utilisateur.nom" required>
+          </div>
+          <div class="form-group">
+            <label for="prenom">Prénom</label>
+            <input type="text" id="prenom" name="prenom" class="form-control" [ngModel]="utilisateur.prenom" required>
+          </div>
+          <div class="form-group">
+            <label for="naissance">Date de naissance</label>
+            <input type="date" id="naissance" name="dateNaissance" class="form-control" [ngModel]="utilisateur.dateNaissance | date:'yyyy-MM-dd'" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Adresse mail</label>
+            <input type="email" id="email" name="email" class="form-control" [ngModel]="utilisateur.email" required>
+          </div>
+          <div class="form-group">
+            <label for="adresse">Adresse</label>
+            <input type="text" id="adresse" name="adresse" class="form-control" [ngModel]="utilisateur.adresse" required>
+          </div>
+          <div class="form-group">
+            <label for="code">Code postal</label>
+            <input type="text" id="code" name="code" class="form-control" [(ngModel)]="code" required
+                   (input)="onChangementCode()">
+          </div>
+          <div class="form-group">
+            <label for="commune">Commune</label>
+            <select id="commune" name="commune" class="form-control" ngModel required [disabled]="!codeOk">
+              <option *ngFor="let ville of villes" [ngValue]="ville"
+                      [selected]="ville.code===utilisateur.ville.code">{{ ville.nom }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="telephone">Téléphone</label>
+            <input type="text" id="telephone" name="telephone" class="form-control" [ngModel]="utilisateur.telephone" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary"
+                  data-toggle="modal" data-target="#popupInfos"
+                  [disabled]="i.invalid || !codeOk">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

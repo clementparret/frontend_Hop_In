@@ -1,0 +1,113 @@
+<app-header></app-header>
+<div class="container">
+    <form [formGroup]="formulaire" (ngSubmit)="onSubmit()">
+
+      <div [hidden]="partie1">
+        <div class="row justify-content-center">
+          <div class="col-10">
+            <div class="form-group">
+              <label for="date">Quel jour réalisez-vous ce déplacement ?</label>
+              <input type="date" id="date" class="form-control" formControlName="date">
+            </div>
+            <div class="form-group">
+              <label for="nbPlaces">Combien de passagers pouvez-vous prendre ?</label>
+              <input type="number" min="1" max="4" id="nbPlaces" class="form-control" formControlName="nbPlaces">
+            </div>
+
+            <div formArrayName="etapes">
+              <div *ngFor="let etape of getEtapes().controls; let i = index">
+                <div [formGroupName]="i">
+                  <div class="row">
+                    <div class="form-group col-4">
+                      <label for="ville{{i}}">
+                        Ville
+                        <span *ngIf="i===0"> de départ</span>
+                        <span *ngIf="i!==0 && i !==(nbVilles-1)"> étape n°{{i}}</span>
+                        <span *ngIf="i===(nbVilles-1)"> d'arrivée</span>
+                      </label>
+                      <input type="text" id="ville{{i}}" class="form-control" formControlName="ville"
+                             list="villes"
+                             autocomplete="disabled"
+                             (input)="onChangementVille(i)">
+                     <datalist id="villes">
+                       <select name="select" id="select{{i}}">
+                          <option *ngFor="let ville of villes" (click)="onClicOption(ville)">{{ ville.nom }} ({{ ville.codeDepartement }})</option>
+                       </select> 
+                     </datalist>
+                      <button type="button" class="form-control">Coucou</button>
+                    </div>
+                    <div class="form-group col-4">
+                      <label for="lieu{{i}}">Précision (quartier/lieu/etc.)</label>
+                      <input type="text" id="lieu{{i}}" class="form-control" formControlName="lieu">
+                    </div>
+                    <div class="form-group col-4">
+                      <label for="heure{{i}}">
+                        Heure
+                        <span *ngIf="i===0"> de départ</span>
+                        <span *ngIf="i===(nbVilles-1)"> d'arrivée</span>
+                      </label>
+                      <input type="time" id="heure{{i}}" step="300" class="form-control" formControlName="heure">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary" [disabled]="nbVilles>=5" (click)="onAjouterEtape()">Ajouter une étape</button>
+            <button class="btn btn-primary" (click)="onSuivant()" [disabled]="!getEtapes().valid">Suivant</button>
+          </div>
+        </div>
+      </div>
+
+      <div [hidden]="!partie1">
+
+        <div formArrayName="prix">
+          <div *ngFor="let prix of getPrix().controls; let i = index; let c = count">
+            <div class="form-group row justify-content-center">
+              <div class="col-5 col-form-label">
+                <label for="prix{{i}}">Prix du trajet
+                  <span *ngIf="i<=(nbVilles-2)">
+                    {{ formulaire.value.etapes['0'].ville }} - {{ formulaire.value.etapes[i+1].ville }}</span>
+                  <span *ngIf="i>(nbVilles-2)&&i<=((2*nbVilles)-4)">
+                    {{ formulaire.value.etapes['1'].ville }} - {{ formulaire.value.etapes[i-nbVilles+3].ville }}</span>
+                  <span *ngIf="i>((2*nbVilles)-4)&&i<=((3*nbVilles)-7)">
+                    {{ formulaire.value.etapes['2'].ville }} - {{ formulaire.value.etapes[i-(2*(nbVilles-3))].ville }}</span>
+                  <span *ngIf="i>((3*nbVilles)-7)&&i>8">
+                    {{ formulaire.value.etapes['3'].ville }} - {{ formulaire.value.etapes[4].ville }}</span>
+                </label>
+              </div>
+              <div class="col-5">
+                <input type="number" id="prix{{i}}" class="form-control" [formControlName]="i">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-2">
+            Véhicule
+          </div>
+          <div class="col-8">
+            <div *ngFor="let voiture of utilisateur?.voitures; let i = index" [hidden]="!voiture.active" class="form-check">
+              <input type="radio" id="voiture{{i}}" [value]="voiture._id" formControlName="voiture" class="form-check-input">
+              <label for="voiture{{i}}" class="form-check-label">
+                <span>{{ voiture.modele }} </span>
+                <span>({{ voiture.marque }})</span>
+                <span> - {{ voiture.couleur }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-10">
+            <div class="form-group">
+              <label for="commentaire">Dites-nous en plus sur ce déplacement !</label>
+              <textarea type="text" id="commentaire" class="form-control" formControlName="commentaire"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="formulaire.valid">Terminer</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+</div>
