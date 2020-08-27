@@ -10,12 +10,14 @@ import {Router} from "@angular/router";
 export class HeaderComponent implements OnInit {
 
   isAuth: boolean;
+  url: string;
 
   constructor(private auth: UtilisateurService,
               private router: Router) { }
 
   ngOnInit(): void {
     this.isAuth = this.auth.isAuth;
+    this.url = this.router.url;
   }
 
   onDeconnexion() {

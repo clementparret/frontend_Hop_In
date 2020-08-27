@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { AppComponent } from './app.component';
@@ -17,12 +17,15 @@ import { InformationsComponent } from './informations/informations.component';
 import { PropositionComponent } from './proposition/proposition.component';
 import {VilleService} from "./services/ville.service";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularMaterialModule } from './angular-material.module';
+import {DatePipe} from "@angular/common";
+import { RechercheComponent } from './recherche/recherche.component';
 
 const appRoutes: Routes = [
   { path: '', component: AccueilComponent },
   { path: 'inscription', component: InscriptionComponent },
   { path: 'connexion', component: ConnexionComponent },
-  { path: 'proposition', /*canActivate: [AuthGuard],*/ component: PropositionComponent },
+  { path: 'proposition', canActivate: [AuthGuard], component: PropositionComponent },
   { path: 'espace', canActivate: [AuthGuard], component: EspaceComponent,
     children: [
       { path: 'informations', canActivate: [AuthGuard], component: InformationsComponent },
@@ -38,7 +41,8 @@ const appRoutes: Routes = [
     HeaderComponent,
     EspaceComponent,
     InformationsComponent,
-    PropositionComponent
+    PropositionComponent,
+    RechercheComponent
   ],
   imports: [
     BrowserModule,
@@ -47,13 +51,16 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
+    AngularMaterialModule,
   ],
   providers: [
     AuthGuard,
     MembreService,
     UtilisateurService,
     VilleService,
+    DatePipe,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

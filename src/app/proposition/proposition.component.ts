@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Utilisateur} from "../modele/Utilisateur.modele";
 import {UtilisateurService} from "../services/utilisateur.service";
 import {Ville} from "../modele/Ville.modele";
 import {VilleService} from "../services/ville.service";
+import {DatePipe} from "@angular/common";
+import {TrajetService} from "../services/trajet.service";
 
 @Component({
   selector: 'app-proposition',
@@ -18,15 +20,19 @@ export class PropositionComponent implements OnInit {
   partie1: boolean = false;
   utilisateur: Utilisateur;
   villes: Ville[];
-  villesSelectionnees: Ville[];
+  demain: String;
 
   constructor(private formBuilder: FormBuilder,
               private auth: UtilisateurService,
               private villeService: VilleService,
-              private router: Router) { }
+              private trajetService: TrajetService,
+              private router: Router,
+              private datepipe: DatePipe) { }
 
   ngOnInit(): void {
     this.initialiserFormulaire();
+    let aujourdhui = new Date();
+    this.demain = this.datepipe.transform(aujourdhui.setDate(aujourdhui.getDate()+1), 'yyyy-MM-dd');
     this.auth.rechercherUtilisateurParIdAction()
       .then(
         (utilisateur: any) => {
@@ -40,7 +46,7 @@ export class PropositionComponent implements OnInit {
   initialiserFormulaire() {
     this.formulaire = this.formBuilder.group({
       nbPlaces: [ 2, [Validators.required, Validators.max(4), Validators.min(1)]],
-      date: [new Date(), Validators.required],
+      date: [null, Validators.required],
       commentaire: '',
       etapes: this.formBuilder.array([]),
       prix: this.formBuilder.array([]),
@@ -72,15 +78,17 @@ export class PropositionComponent implements OnInit {
       date.setMinutes(minutes);
       valeurs.etapes[i].heure = date;
     }
-    console.log(valeurs);
-    console.log(this.villesSelectionnees);
-
     //Vérifier si il faut créer une voiture
-    //this.router.navigate(['/espace/informations']);
+    this.trajetService.proposerDeplacement(valeurs, this.auth.utilisateurId)
+      .then((res) => {
+        this.router.navigate(['/espace/informations']);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   onSuivant() {
-    console.log(this.formulaire.value)
     this.partie1 = true;
   }
 
@@ -100,7 +108,6 @@ export class PropositionComponent implements OnInit {
 
   onChangementVille(index) {
     let value = this.formulaire.value.etapes[index].ville;
-    console.log(value);
     this.villeService.rechercherVilleParNomAction(value)
       .then((res) => {
         this.villes = this.villeService.villes.slice(0,20);
@@ -110,12 +117,24 @@ export class PropositionComponent implements OnInit {
       });
   }
 
-  onClicOption(ville: Ville) {
-    console.log(ville);
+  affichageVille(ville) {
+    let texte = '';
+    if (ville) {
+      texte = ville.nom + ' (' + ville.codeDepartement + ')';
+    }
+    return texte;
   }
 
   getEtapes(): FormArray {
     return this.formulaire.get('etapes') as FormArray;
+  }
+
+  getDate(): FormControl {
+    return this.formulaire.get('date') as FormControl;
+  }
+
+  getNbPlaces(): FormControl {
+    return this.formulaire.get('nbPlaces') as FormControl;
   }
 
   getPrix(): FormArray {

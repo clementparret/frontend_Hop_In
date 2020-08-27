@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-success py-3 mb-5">
   <span class="navbar-brand">HopIn</span>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -7,19 +7,19 @@
   <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
       <li class="nav-item px-3">
-        <a class="nav-link disabled" routerLink="/recherche">Rechercher</a>
+        <a class="nav-link disabled" routerLink="/recherche" [class.active]="url==='/recherche'">Rechercher</a>
       </li>
       <li class="nav-item px-3">
-        <a class="nav-link" routerLink="/proposition">Proposer un trajet</a>
+        <a class="nav-link" routerLink="/proposition" [class.active]="url==='/proposition'">Proposer un trajet</a>
       </li>
       <li class="nav-item px-3" [hidden]="isAuth">
-        <a class="nav-link" routerLink="/inscription">S'inscrire</a>
+        <a class="nav-link" routerLink="/inscription" [class.active]="url==='/inscription'">S'inscrire</a>
       </li>
       <li class="nav-item px-3" [hidden]="isAuth">
-        <a class="nav-link" routerLink="/connexion">Se connecter</a>
+        <a class="nav-link" routerLink="/connexion" [class.active]="url==='/connexion'">Se connecter</a>
       </li>
       <li class="nav-item px-3" [hidden]="!isAuth">
-        <a class="nav-link" routerLink="/espace/informations">Mon profil</a>
+        <a class="nav-link" routerLink="/espace/informations" [class.active]="url.includes('/espace')">Mon profil</a>
       </li>
       <li class="nav-item px-3" [hidden]="!isAuth">
         <a class="nav-link" routerLink="" (click)="onDeconnexion()">Déconnexion</a>
