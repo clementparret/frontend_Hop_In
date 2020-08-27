@@ -26,6 +26,7 @@ const appRoutes: Routes = [
   { path: 'inscription', component: InscriptionComponent },
   { path: 'connexion', component: ConnexionComponent },
   { path: 'proposition', canActivate: [AuthGuard], component: PropositionComponent },
+  { path: 'recherche', component: RechercheComponent },
   { path: 'espace', canActivate: [AuthGuard], component: EspaceComponent,
     children: [
       { path: 'informations', canActivate: [AuthGuard], component: InformationsComponent },

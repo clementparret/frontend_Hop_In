@@ -1,1 +1,65 @@
-<p>recherche works!</p>
+<app-header></app-header>
+
+<div class="container">
+  <form [formGroup]="formulaire" (ngSubmit)="onSubmit()">
+    <div class="form-row justify-content-center d-flex align-items-end">
+      <div class="col-3 form-group">
+        <label for="villeDepart">
+          Ville de départ
+        </label>
+        <input type="text" id="villeDepart" class="form-control" formControlName="villeDepart"
+               autocomplete="off"
+               (input)="onChangementVille(true)"
+               matInput
+               [matAutocomplete]="villesComplete">
+        <mat-autocomplete #villesComplete="matAutocomplete" [displayWith]="affichageVille">
+          <mat-option *ngFor="let ville of villes" [value]="ville">{{ ville.nom }} ({{ ville.codeDepartement }})</mat-option>
+        </mat-autocomplete>
+      </div>
+      <div class="col-3 form-group">
+        <label for="villeDepart">
+          Ville d'arrivée
+        </label>
+        <input type="text" id="villeArrivee" class="form-control" formControlName="villeArrivee"
+               autocomplete="off"
+               (input)="onChangementVille(false)"
+               matInput
+               [matAutocomplete]="villesComplete">
+        <mat-autocomplete #villesComplete="matAutocomplete" [displayWith]="affichageVille">
+          <mat-option *ngFor="let ville of villes" [value]="ville">{{ ville.nom }} ({{ ville.codeDepartement }})</mat-option>
+        </mat-autocomplete>
+      </div>
+      <div class="col-2 form-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" class="form-control" formControlName="date" [min]="demain">
+      </div>
+      <div class="col-2 form-group">
+        <label for="nbPlaces">Passagers</label>
+        <input type="number" onKeyDown="return false" min="1" max="4" id="nbPlaces" class="form-control" formControlName="nbPlaces">
+      </div>
+      <div class="col-2 form-group">
+        <button type="submit" class="btn btn-success form-control" [disabled]="formulaire.invalid">Rechercher</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="container" *ngIf="resultats">
+  <div class="row">
+    <h5>
+      {{ resultats?.length }}
+      <span *ngIf="resultats.length > 1"> Resultats</span>
+      <span *ngIf="resultats.length <= 1">Resultat</span>
+    </h5>
+  </div>
+  <div class="row">
+    <div class="col-5" style="background-color: aqua">
+      <div *ngFor="let resultat of resultats" class="card">
+        {{ resultat.villeDepart.nom }} - {{ resultat.villeArrivee.nom }}
+      </div>
+    </div>
+    <div class="col-7 position-sticky" style="background-color: antiquewhite">
+vvvv
+    </div>
+  </div>
+</div>

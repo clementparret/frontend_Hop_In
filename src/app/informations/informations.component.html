@@ -20,7 +20,7 @@
       <div>{{ utilisateur?.adresse }}, {{ utilisateur?.codePostal }} {{ utilisateur?.ville?.nom }}</div>
     </div>
     <div class="col-4">
-      <button class="btn btn-secondary"
+      <button class="btn btn-secondary form-control"
               data-toggle="modal" data-target="#popupInfos">Modifier mes informations</button>
     </div>
   </div>
@@ -32,10 +32,10 @@
       <h5>Description</h5>
     </div>
     <div class="col-4">
-      <button class="btn btn-secondary"
+      <button class="btn btn-secondary form-control"
               *ngIf="utilisateur?.description !== ' ' && utilisateur?.description !== ''"
               data-toggle="modal" data-target="#popupDescription">Modifier la description</button>
-      <button class="btn btn-secondary"
+      <button class="btn btn-secondary form-control"
               *ngIf="utilisateur?.description === ' ' || utilisateur?.description === ''"
               data-toggle="modal" data-target="#popupDescription">Ajouter une description</button>
     </div>
@@ -51,7 +51,7 @@
       <h5>Mes voitures</h5>
     </div>
     <div class="col-4">
-      <button class="btn btn-secondary"
+      <button class="btn btn-secondary form-control"
               data-toggle="modal" data-target="#popupVoiture">Ajouter une voiture</button>
     </div>
   </div>

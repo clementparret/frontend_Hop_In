@@ -1,4 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Ville} from "../modele/Ville.modele";
+import {UtilisateurService} from "../services/utilisateur.service";
+import {VilleService} from "../services/ville.service";
+import {TrajetService} from "../services/trajet.service";
+import {Router} from "@angular/router";
+import {DatePipe} from "@angular/common";
+import {Trajet} from "../modele/Trajet.modele";
 
 @Component({
   selector: 'app-recherche',
@@ -7,9 +15,69 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RechercheComponent implements OnInit {
 
-  constructor() { }
+  formulaire: FormGroup;
+  villes: Ville[];
+  resultats: Trajet[];
+  demain: String;
+  isAuth: boolean;
+
+  constructor(private formBuilder: FormBuilder,
+              private auth: UtilisateurService,
+              private villeService: VilleService,
+              private trajetService: TrajetService,
+              private router: Router,
+              private datepipe: DatePipe) { }
 
   ngOnInit(): void {
+    this.isAuth = this.auth.isAuth;
+    this.initialiserFormulaire();
+    let aujourdhui = new Date();
+    this.demain = this.datepipe.transform(aujourdhui.setDate(aujourdhui.getDate()+1), 'yyyy-MM-dd');
+  }
+
+  initialiserFormulaire() {
+    this.formulaire = this.formBuilder.group({
+      villeDepart: [null, Validators.required],
+      villeArrivee: [null, Validators.required],
+      nbPlaces: [1, [Validators.required, Validators.max(4), Validators.min(1)]],
+      date: [null, Validators.required],
+    });
+  }
+
+  onChangementVille(depart: boolean) {
+    let value;
+    if (depart) {
+      value = this.formulaire.value.villeDepart;
+    } else {
+      value = this.formulaire.value.villeArrivee;
+    }
+    this.villeService.rechercherVilleParNomAction(value)
+      .then((res) => {
+        this.villes = this.villeService.villes.slice(0,20);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  affichageVille(ville) {
+    let texte = '';
+    if (ville) {
+      texte = ville.nom + ' (' + ville.codeDepartement + ')';
+    }
+    return texte;
+  }
+
+  onSubmit() {
+    const valeurs = this.formulaire.value;
+    console.log(this.formulaire.value)
+    this.trajetService.rechercherTrajets(valeurs)
+      .then((res) => {
+        this.resultats = this.trajetService.trajets;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
 }

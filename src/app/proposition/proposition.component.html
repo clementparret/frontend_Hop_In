@@ -1,9 +1,10 @@
 <app-header></app-header>
+
 <div class="container">
     <form [formGroup]="formulaire" (ngSubmit)="onSubmit()">
 
       <div [hidden]="partie1">
-        <div class="row justify-content-center">
+        <div class="form-row justify-content-center">
           <div class="col-10">
             <div class="form-group">
               <label for="date">Quel jour réalisez-vous ce déplacement ?</label>
@@ -11,7 +12,7 @@
             </div>
             <div class="form-group">
               <label for="nbPlaces">Combien de passagers pouvez-vous prendre ?</label>
-              <input type="number" min="1" max="4" id="nbPlaces" class="form-control" formControlName="nbPlaces">
+              <input type="number" onKeyDown="return false" min="1" max="4" id="nbPlaces" class="form-control" formControlName="nbPlaces">
             </div>
 
             <div formArrayName="etapes">
@@ -73,8 +74,11 @@
                     {{ formulaire.value.etapes['3'].ville?.nom }} - {{ formulaire.value.etapes[4].ville?.nom }}</span>
                 </label>
               </div>
-              <div class="col-5">
+              <div class="col-5 input-group mb-3">
                 <input type="number" id="prix{{i}}" class="form-control" [formControlName]="i">
+                <div class="input-group-append">
+                  <span class="input-group-text">€</span>
+                </div>
               </div>
             </div>
           </div>
