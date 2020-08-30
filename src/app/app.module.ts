@@ -20,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
 import {DatePipe} from "@angular/common";
 import { RechercheComponent } from './recherche/recherche.component';
+import { TrajetsFutursComponent } from './trajets-futurs/trajets-futurs.component';
 
 const appRoutes: Routes = [
   { path: '', component: AccueilComponent },
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
   { path: 'espace', canActivate: [AuthGuard], component: EspaceComponent,
     children: [
       { path: 'informations', canActivate: [AuthGuard], component: InformationsComponent },
+      { path: 'trajets', canActivate: [AuthGuard], component: TrajetsFutursComponent },
     ]},
 ]
 
@@ -43,7 +45,8 @@ const appRoutes: Routes = [
     EspaceComponent,
     InformationsComponent,
     PropositionComponent,
-    RechercheComponent
+    RechercheComponent,
+    TrajetsFutursComponent,
   ],
   imports: [
     BrowserModule,

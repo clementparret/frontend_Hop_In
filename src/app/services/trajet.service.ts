@@ -52,8 +52,28 @@ export class TrajetService {
     });
   }
 
+  candidater(utilisateurId: string, trajetId: string, nbPlaces: number) {
+    return new Promise((resolve, reject) => {
+      this.http.post(
+        'http://localhost:3000/hopin/trajet/candidater',
+        { utilisateurId: utilisateurId,
+                trajetId: trajetId,
+                nbPlaces: nbPlaces })
+        .subscribe(
+          (response) => {
+            resolve();
+            console.log('Candidature soumise');
+          },
+          (error) => {
+            reject();
+            console.log('Erreur ! : ' + error);
+          }
+        );
+    });
+  }
+
   trierTrajets() {
-    this.trajets.sort((a, b) => (a.dateDepart < b.dateDepart) ? -1 : 1);
+    this.trajets.sort((a, b) => (a.dateDepart > b.dateDepart) ? -1 : 1);
   }
 
 }

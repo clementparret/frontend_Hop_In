@@ -2,6 +2,7 @@ import {Voiture} from "./Voiture.modele";
 import {Ville} from "./Ville.modele";
 
 export class Utilisateur {
+  _id: string;
   nom: string;
   prenom: string;
   dateNaissance: Date;

@@ -46,8 +46,8 @@
         <label for="mdp2">Confirmez votre mot de passe</label>
         <input type="password" id="mdp2" name="motDePasse2" class="form-control" ngModel required>
       </div>
-      <button class="btn btn-primary offset-sm-5" type="submit" [disabled]="f.invalid || !codeOk">Je m'inscris</button>
+      <button class="btn btn-success" type="submit" [disabled]="f.invalid || !codeOk">Je m'inscris</button>
     </form>
-    <a routerLink="/connexion">J'ai déjà un compte</a>
+    <a class="text-success" routerLink="/connexion">J'ai déjà un compte</a>
   </div>
 </div>

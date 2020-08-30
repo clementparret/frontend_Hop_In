@@ -1,5 +1,6 @@
 import {Utilisateur} from "./Utilisateur.modele";
 import {Trajet} from "./Trajet.modele";
+import {Voiture} from "./Voiture.modele";
 
 export class Deplacement {
   date: Date;
@@ -8,4 +9,5 @@ export class Deplacement {
   commentaire: string;
   conducteur: Utilisateur;
   trajets: [Trajet];
+  voiture: Voiture;
 }

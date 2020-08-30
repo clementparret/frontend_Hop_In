@@ -1,4 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+$secondary:#F1C40F;
+
+@import "~bootstrap";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.trajet {
+  transition: background-color 300ms ease-in-out, border-left-color 300ms ease-in-out;
+}
+
+.trajet:hover {
+  background-color: #EAECEE;
+}
+
+.form-control:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+

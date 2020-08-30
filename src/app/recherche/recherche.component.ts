@@ -18,8 +18,11 @@ export class RechercheComponent implements OnInit {
   formulaire: FormGroup;
   villes: Ville[];
   resultats: Trajet[];
+  selectionne: Trajet;
   demain: String;
+  nbPlaces: number;
   isAuth: boolean;
+  utilisateurId: string;
 
   constructor(private formBuilder: FormBuilder,
               private auth: UtilisateurService,
@@ -30,6 +33,7 @@ export class RechercheComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAuth = this.auth.isAuth;
+    this.utilisateurId = this.auth.utilisateurId;
     this.initialiserFormulaire();
     let aujourdhui = new Date();
     this.demain = this.datepipe.transform(aujourdhui.setDate(aujourdhui.getDate()+1), 'yyyy-MM-dd');
@@ -70,10 +74,26 @@ export class RechercheComponent implements OnInit {
 
   onSubmit() {
     const valeurs = this.formulaire.value;
-    console.log(this.formulaire.value)
     this.trajetService.rechercherTrajets(valeurs)
       .then((res) => {
         this.resultats = this.trajetService.trajets;
+        this.selectionne = this.resultats[0];
+        this.nbPlaces = valeurs.nbPlaces;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  onClickTrajet(i) {
+    this.selectionne = this.resultats[i];
+    console.log(this.selectionne)
+  }
+
+  onCandidater() {
+    this.trajetService.candidater(this.auth.utilisateurId, this.selectionne._id, this.nbPlaces)
+      .then((res) => {
+        this.router.navigate(['/espace/informations']);
       })
       .catch((err) => {
         console.log(err);

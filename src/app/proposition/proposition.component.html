@@ -51,8 +51,8 @@
                 </div>
               </div>
             </div>
-            <button type="button" class="btn btn-secondary" [disabled]="nbVilles>=5" (click)="onAjouterEtape()">Ajouter une étape</button>
-            <button type="button" class="btn btn-primary" (click)="onSuivant()" [disabled]="!getEtapes().valid || !getDate().valid || !getNbPlaces().valid">Suivant</button>
+            <button type="button" class="btn btn-secondary text-light" [disabled]="nbVilles>=5" (click)="onAjouterEtape()">Ajouter une étape</button>
+            <button type="button" class="btn btn-success ml-2" (click)="onSuivant()" [disabled]="!getEtapes().valid || !getDate().valid || !getNbPlaces().valid">Suivant</button>
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@
               <label for="commentaire">Dites-nous en plus sur ce déplacement !</label>
               <textarea type="text" id="commentaire" class="form-control" formControlName="commentaire"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" [disabled]="formulaire.invalid">Terminer</button>
+            <button type="submit" class="btn btn-success" [disabled]="formulaire.invalid">Terminer</button>
           </div>
         </div>
       </div>

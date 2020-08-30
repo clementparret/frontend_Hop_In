@@ -20,7 +20,7 @@
       <div>{{ utilisateur?.adresse }}, {{ utilisateur?.codePostal }} {{ utilisateur?.ville?.nom }}</div>
     </div>
     <div class="col-4">
-      <button class="btn btn-secondary form-control"
+      <button class="btn btn-secondary text-light btn-block"
               data-toggle="modal" data-target="#popupInfos">Modifier mes informations</button>
     </div>
   </div>
@@ -32,10 +32,10 @@
       <h5>Description</h5>
     </div>
     <div class="col-4">
-      <button class="btn btn-secondary form-control"
+      <button class="btn btn-secondary text-light btn-block"
               *ngIf="utilisateur?.description !== ' ' && utilisateur?.description !== ''"
               data-toggle="modal" data-target="#popupDescription">Modifier la description</button>
-      <button class="btn btn-secondary form-control"
+      <button class="btn btn-secondary text-light btn-block"
               *ngIf="utilisateur?.description === ' ' || utilisateur?.description === ''"
               data-toggle="modal" data-target="#popupDescription">Ajouter une description</button>
     </div>
@@ -51,11 +51,11 @@
       <h5>Mes voitures</h5>
     </div>
     <div class="col-4">
-      <button class="btn btn-secondary form-control"
+      <button class="btn btn-secondary text-light btn-block"
               data-toggle="modal" data-target="#popupVoiture">Ajouter une voiture</button>
     </div>
   </div>
-  <ul class="list-group">
+  <ul class="list-group list-group-flush">
     <li class="row list-group-item" *ngFor="let voiture of utilisateur?.voitures" [hidden]="!voiture.active">
       <div class="col">
         <span>{{ voiture.modele }} </span>
@@ -69,7 +69,7 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col">
-      <button class="btn btn-secondary"
+      <button class="btn btn-secondary text-light"
               data-toggle="modal" data-target="#popupMdp">Changer de mot de passe</button>
     </div>
   </div>
@@ -96,8 +96,8 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-primary"
+          <button type="button" class="btn btn-secondary text-light" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-success"
                   data-toggle="modal" data-target="#popupDescription">Enregistrer</button>
         </div>
       </form>
@@ -132,8 +132,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-primary"
+          <button type="button" class="btn btn-secondary text-light" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-success"
                   data-toggle="modal" data-target="#popupVoiture">Enregistrer</button>
         </div>
       </form>
@@ -168,8 +168,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-primary"
+          <button type="button" class="btn btn-secondary text-light" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-success"
                   data-toggle="modal" data-target="#popupMdp">Enregistrer</button>
         </div>
       </form>
@@ -228,8 +228,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-primary"
+          <button type="button" class="btn btn-secondary text-light" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-success"
                   data-toggle="modal" data-target="#popupInfos"
                   [disabled]="i.invalid || !codeOk">Enregistrer</button>
         </div>
