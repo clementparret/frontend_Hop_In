@@ -21,6 +21,7 @@ import { AngularMaterialModule } from './angular-material.module';
 import {DatePipe} from "@angular/common";
 import { RechercheComponent } from './recherche/recherche.component';
 import { TrajetsFutursComponent } from './trajets-futurs/trajets-futurs.component';
+import {NbOccurencesPipe} from "./pipes/nbOccurences.pipe";
 
 const appRoutes: Routes = [
   { path: '', component: AccueilComponent },
@@ -47,6 +48,7 @@ const appRoutes: Routes = [
     PropositionComponent,
     RechercheComponent,
     TrajetsFutursComponent,
+    NbOccurencesPipe,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +65,7 @@ const appRoutes: Routes = [
     UtilisateurService,
     VilleService,
     DatePipe,
+    NbOccurencesPipe,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

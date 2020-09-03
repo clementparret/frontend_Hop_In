@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<div class="container mb-5">
+<div class="container mb-5 pt-3 pb-1 card recherche">
   <form [formGroup]="formulaire" (ngSubmit)="onSubmit()">
     <div class="form-row justify-content-center d-flex align-items-end">
       <div class="col-3 form-group">
@@ -78,11 +78,11 @@
               <h4 class="card-title" style="display: inline">
                 {{ selectionne?.villeDepart.nom }}
               </h4>
-              <span class="card-text"> ({{ selectionne?.lieuDepart }})</span>
+              <span class="card-text" *ngIf="selectionne.lieuDepart"> ({{ selectionne?.lieuDepart }})</span>
               <h4 class="card-title" style="display: inline">
                 -> {{ selectionne?.villeArrivee.nom }}
               </h4>
-              <span class="card-text"> ({{ selectionne?.lieuArrivee }})</span>
+              <span class="card-text" *ngIf="selectionne.lieuArrivee"> ({{ selectionne?.lieuArrivee }})</span>
             </div>
             <div class="card-text">Départ : {{ selectionne?.dateDepart | date: 'H:mm' }}</div>
             <div class="card-text">Arrivée : {{ selectionne?.dateArrivee | date: 'H:mm' }}</div>

@@ -1,10 +1,8 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <h1>{{ utilisateur?.prenom }} {{ utilisateur?.nom }}</h1>
-    </div>
-    <div class="col pt-3">
-      <div>{{ utilisateurAge }} ans</div>
+      <h1 style="display: inline">{{ utilisateur?.prenom }} {{ utilisateur?.nom }}</h1>
+      <span class="ml-4">{{ utilisateurAge }} ans</span>
     </div>
   </div>
   <div class="row">
@@ -58,6 +56,9 @@
   <ul class="list-group list-group-flush">
     <li class="row list-group-item" *ngFor="let voiture of utilisateur?.voitures" [hidden]="!voiture.active">
       <div class="col">
+        <button type="button" class="close">
+          <span>&times;</span>
+        </button>
         <span>{{ voiture.modele }} </span>
         <span>({{ voiture.marque }})</span>
         <span> - {{ voiture.couleur }}</span>

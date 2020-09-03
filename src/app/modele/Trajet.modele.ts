@@ -14,4 +14,5 @@ export class Trajet {
   deplacement: Deplacement;
   candidats: [Utilisateur];
   participants: [Utilisateur];
+  refuses: [Utilisateur];
 }

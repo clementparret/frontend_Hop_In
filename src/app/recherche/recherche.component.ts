@@ -7,6 +7,7 @@ import {TrajetService} from "../services/trajet.service";
 import {Router} from "@angular/router";
 import {DatePipe} from "@angular/common";
 import {Trajet} from "../modele/Trajet.modele";
+import {VilleValidator} from "../validators/ville.validator";
 
 @Component({
   selector: 'app-recherche',
@@ -41,8 +42,8 @@ export class RechercheComponent implements OnInit {
 
   initialiserFormulaire() {
     this.formulaire = this.formBuilder.group({
-      villeDepart: [null, Validators.required],
-      villeArrivee: [null, Validators.required],
+      villeDepart: [null, [Validators.required, VilleValidator]],
+      villeArrivee: [null, [Validators.required, VilleValidator]],
       nbPlaces: [1, [Validators.required, Validators.max(4), Validators.min(1)]],
       date: [null, Validators.required],
     });

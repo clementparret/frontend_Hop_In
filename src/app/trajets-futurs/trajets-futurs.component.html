@@ -1,3 +1,195 @@
 <div class="container">
-  coucou
+  <div class="row" *ngIf="liste?.length>0">
+    <div class="col-5">
+      <div *ngFor="let item of liste; let i = index" class="card trajet container mb-3"
+           [ngStyle]="{'border-left': (item._id===selectionne._id) ? '5px solid #5CB85C' : '5px solid #F1C40F'}"
+           (click)="onClickTrajet(i)"
+           [hidden]="(i>0 && item._id===liste[i-1]._id)">
+
+        <div *ngIf="item.date">
+          <div class="row">
+            <div class="card-body col">
+              <div class="d-flex justify-content-between">
+                <h5 class="card-title">{{ item.trajets[0].villeDepart.nom }} -> {{ item.trajets[item.trajets.length-1].villeArrivee.nom }}</h5>
+                <span class="card-text">{{ item.date | date: 'd MMMM y' }}</span>
+              </div>
+              <div class="card-text">Départ : {{ item.trajets[0].dateDepart | date: 'H:mm' }}</div>
+              <div class="card-text">Arrivée : {{ item.trajets[item.trajets.length-1].dateArrivee | date: 'H:mm' }}</div>
+              <div class="card-text d-flex justify-content-end">Vous êtes conducteur</div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!item.date">
+          <div class="row">
+            <div class="card-body col">
+              <div class="row">
+                <div class="col d-flex justify-content-between">
+                  <h5 class="card-title">{{ item.villeDepart.nom }} -> {{ item.villeArrivee.nom }}</h5>
+                  <span class="card-text">{{ item.dateDepart | date: 'd MMMM y' }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="card-text">Départ : {{ item.dateDepart | date: 'H:mm' }}</div>
+                  <div class="card-text">Arrivée : {{ item.dateArrivee | date: 'H:mm' }}</div>
+                </div>
+                <div class="col-6">
+                  <div class="card-text">{{ item.deplacement.conducteur.prenom }}</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col d-flex justify-content-between">
+                  <h5 class="card-title m-0">{{ item.prix }}€</h5>
+                  <div class="card-text" *ngIf="item.candidats.includes(utilisateur._id)">En attente d'acceptation</div>
+                  <div class="card-text" *ngIf="item.refuses && item.refuses.includes(utilisateur._id)">Votre candidature a été refusée</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <div class="col-7 pl-0">
+      <div class="card container sticky-top">
+
+        <div *ngIf="selectionne.date">
+          <div class="row">
+            <div class="card-body col">
+              <div class="mb-2">
+                <h4 class="card-title" style="display: inline">
+                  {{ selectionne?.trajets[0].villeDepart.nom }}
+                </h4>
+                <span class="card-text" *ngIf="selectionne.trajets[0].lieuDepart"> ({{ selectionne?.trajets[0].lieuDepart }})</span>
+                <h4 class="card-title" style="display: inline">
+                  -> {{ selectionne?.trajets[selectionne.trajets.length-1].villeArrivee.nom }}
+                </h4>
+                <span class="card-text" *ngIf="selectionne.trajets[selectionne.trajets.length-1].lieuArrivee"> ({{ selectionne?.trajets[selectionne.trajets.length-1].lieuArrivee }})</span>
+              </div>
+              <div class="card-text">Départ : {{ selectionne?.trajets[0].dateDepart | date: 'H:mm' }}</div>
+              <div class="card-text">Arrivée : {{ selectionne?.trajets[selectionne.trajets.length-1].dateArrivee | date: 'H:mm' }}</div>
+              <div class="mt-3">
+                <div class="card-text">{{ selectionne?.commentaire }}</div>
+              </div>
+              <div class="mt-3" *ngIf="selectionne?.nbPlacesRestantes<selectionne?.nbPlacesProposees">
+                <h6 class="card-title">Passagers</h6>
+                <div *ngFor="let trajet of selectionne?.trajets">
+                  <div *ngFor="let personne of trajet.participants; let i = index"
+                       [hidden]="(i>0 && personne._id===trajet.participants[i-1]._id)">
+                    <div class="card-text">{{ personne.prenom }}</div>
+                    <div class="card-text" style="display: inline">
+                      {{ trajet.villeDepart.nom }} -> {{ trajet.villeArrivee.nom }}
+                      <span class="card-text font-weight-bold ml-3">
+                        {{ trajet.prix }}€ &times;
+                        {{ trajet.participants | nbOccurences: personne._id }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3" *ngIf="selectionne?.nbPlacesRestantes>0">
+                <h6 class="card-title">Candidats</h6>
+                <div *ngFor="let trajet of selectionne?.trajets; let j = index">
+                  <div *ngFor="let personne of trajet.candidats; let i = index"
+                       [hidden]="(i>0 && personne._id===trajet.candidats[i-1]._id)">
+                    <div class="card-text">{{ personne.prenom }}</div>
+                    <div class="d-flex justify-content-between">
+                      <div class="card-text" style="display: inline">
+                        {{ trajet.villeDepart.nom }} -> {{ trajet.villeArrivee.nom }}
+                        <span class="card-text font-weight-bold ml-3">
+                          {{ trajet.prix }}€ &times;
+                          {{ trajet.candidats | nbOccurences: personne._id }}
+                        </span>
+                      </div>
+                      <div>
+                        <button class="btn btn-outline-success btn-sm rounded-pill"
+                                (click)="onAccepter(j, personne._id)">
+                          ✓ Accepter
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill ml-2"
+                                (click)="onRefuser(j, personne._id)">
+                          X Refuser
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3">
+                <h6 class="card-title">Voiture</h6>
+                <div class="card-text">
+                  {{ selectionne?.voiture.modele }}
+                  ({{ selectionne?.voiture.marque }}) -
+                  {{ selectionne?.voiture.couleur }}
+                </div>
+              </div>
+
+              <div class="mt-3">
+                <button class="btn btn-success"
+                        (click)="onAnnuler()">
+                  Annuler ce trajet
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!selectionne.date">
+          <div class="row">
+            <div class="card-body col">
+              <div class="mb-2">
+                <h4 class="card-title" style="display: inline">
+                  {{ selectionne?.villeDepart.nom }}
+                </h4>
+                <span class="card-text"> ({{ selectionne?.lieuDepart }})</span>
+                <h4 class="card-title" style="display: inline">
+                  -> {{ selectionne?.villeArrivee.nom }}
+                </h4>
+                <span class="card-text"> ({{ selectionne?.lieuArrivee }})</span>
+              </div>
+              <div class="card-text">Départ : {{ selectionne?.dateDepart | date: 'H:mm' }}</div>
+              <div class="card-text">Arrivée : {{ selectionne?.dateArrivee | date: 'H:mm' }}</div>
+              <h5 class="card-title">{{ selectionne?.prix }}€</h5>
+              <div class="mt-3">
+                <h6 class="card-title">Conducteur</h6>
+                <div class="card-text">{{ selectionne?.deplacement.conducteur.prenom }}</div>
+                <div class="card-text">{{ selectionne?.deplacement.commentaire }}</div>
+              </div>
+              <div class="mt-3" *ngIf="selectionne?.participants.length>0">
+                <h6 class="card-title">Passagers</h6>
+                <div class="card-text">{{ selectionne?.deplacement.conducteur.prenom }}</div>
+                <div class="card-text">{{ selectionne?.deplacement.commentaire }}</div>
+              </div>
+              <div class="mt-3">
+                <h6 class="card-title">Voiture</h6>
+                <div class="card-text">
+                  {{ selectionne?.deplacement.voiture.modele }}
+                  ({{ selectionne?.deplacement.voiture.marque }}) -
+                  {{ selectionne?.deplacement.voiture.couleur }}
+                </div>
+              </div>
+
+              <div class="mt-3">
+                <button class="btn btn-success"
+                        (click)="onCandidater()"
+                        [disabled]="!isAuth || utilisateurId===selectionne.deplacement.conducteur._id">
+                  Candidater
+                </button>
+                <div *ngIf="!isAuth" style="color: #F1C40F">Vous devez être connecté pour candidater à une annonce</div>
+                <div *ngIf="utilisateurId===selectionne.deplacement.conducteur._id" style="color: #F1C40F">Vous ne pouvez pas candidater à votre propre annonce</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 </div>

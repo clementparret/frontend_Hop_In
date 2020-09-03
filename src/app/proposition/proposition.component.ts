@@ -7,6 +7,7 @@ import {Ville} from "../modele/Ville.modele";
 import {VilleService} from "../services/ville.service";
 import {DatePipe} from "@angular/common";
 import {TrajetService} from "../services/trajet.service";
+import {VilleValidator} from "../validators/ville.validator";
 
 @Component({
   selector: 'app-proposition',
@@ -53,12 +54,12 @@ export class PropositionComponent implements OnInit {
       voiture: [null, Validators.required],
     });
     const depart = this.formBuilder.group({
-      ville: [null, Validators.required],
+      ville: [null, [Validators.required, VilleValidator]],
       lieu: [null],
       heure: [null, Validators.required],
     });
     const arrivee = this.formBuilder.group({
-      ville: [null, Validators.required],
+      ville: [null, [Validators.required, VilleValidator]],
       lieu: [null],
       heure: [null, Validators.required],
     });
@@ -94,7 +95,7 @@ export class PropositionComponent implements OnInit {
 
   onAjouterEtape() {
     const etape = this.formBuilder.group({
-      ville: [null, Validators.required],
+      ville: [null, [Validators.required, VilleValidator]],
       lieu: [null],
       heure: [null, Validators.required],
     });

@@ -1,5 +1,7 @@
 import {Voiture} from "./Voiture.modele";
 import {Ville} from "./Ville.modele";
+import {Trajet} from "./Trajet.modele";
+import {Deplacement} from "./Deplacement.modele";
 
 export class Utilisateur {
   _id: string;
@@ -15,4 +17,7 @@ export class Utilisateur {
   description: string;
   dateInscription: Date;
   voitures: [Voiture];
+  trajetsCandidat: [Trajet];
+  trajetsParticipant: [Trajet];
+  deplacements: [Deplacement];
 }
