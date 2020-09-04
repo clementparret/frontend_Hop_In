@@ -23,6 +23,7 @@ export class InformationsComponent implements OnInit {
   villes: Ville[];
   ville: Ville;
   erreurMdp: boolean = false;
+  erreurInfos: boolean = false;
 
   constructor(private auth: UtilisateurService,
               private villeService: VilleService,
@@ -108,9 +109,13 @@ export class InformationsComponent implements OnInit {
   onChangerInfos(form: NgForm) {
     this.membreService.modifierMembreAction(this.auth.utilisateurId, form.value)
       .then( res => {
+        $('#popupInfos').modal('hide');
         this.ngOnInit();
       })
-      .catch((err) => { console.log(err) });
+      .catch((err) => {
+        console.log(err);
+        this.erreurInfos = true;
+      });
   }
 
   onChangementCode() {
