@@ -7,6 +7,8 @@ import {Voiture} from "../modele/Voiture.modele";
 import {Ville} from "../modele/Ville.modele";
 import {VilleService} from "../services/ville.service";
 
+declare var $: any;
+
 @Component({
   selector: 'app-informations',
   templateUrl: './informations.component.html',
@@ -20,6 +22,7 @@ export class InformationsComponent implements OnInit {
   codeOk: boolean = false;
   villes: Ville[];
   ville: Ville;
+  erreurMdp: boolean = false;
 
   constructor(private auth: UtilisateurService,
               private villeService: VilleService,
@@ -83,12 +86,13 @@ export class InformationsComponent implements OnInit {
     const mdpNouveau1 = form.value['mdpNouveau1'];
     const mdpNouveau2 = form.value['mdpNouveau2'];
     if (mdpNouveau1 !== mdpNouveau2) {
-      alert('Erreur de confirmation du nouveau mot de passe');
+      this.erreurMdp = true;
     } else {
       this.auth.verifierMotDePasseAction(mdpActuel)
         .then((res: any) => {
           this.auth.changerMotDePasseAction(mdpNouveau1)
             .then((res) => {
+              $('#popupMdp').modal('hide');
               console.log('Mot de passe modifié avec succès');
             })
             .catch((err) => {
@@ -102,7 +106,11 @@ export class InformationsComponent implements OnInit {
   }
 
   onChangerInfos(form: NgForm) {
-    console.log(form.value['commune']);
+    this.membreService.modifierMembreAction(this.auth.utilisateurId, form.value)
+      .then( res => {
+        this.ngOnInit();
+      })
+      .catch((err) => { console.log(err) });
   }
 
   onChangementCode() {
@@ -122,6 +130,15 @@ export class InformationsComponent implements OnInit {
       this.villes = null;
       this.ville = null;
     }
+  }
+
+  onDesactiver(index: number) {
+    let voitureId = this.utilisateur.voitures[index]._id;
+    this.membreService.desactiverVoitureAction(voitureId)
+      .then( res => {
+        this.utilisateur.voitures[index].active = false;
+      })
+      .catch((err) => { console.log(err) });
   }
 
 }

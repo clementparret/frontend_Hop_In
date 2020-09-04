@@ -10,26 +10,26 @@
   </div>
 </div>
 
-<div class="container mt-4">
+<div class="container mt-3 bordure-paragraphe">
   <div class="row">
-    <div class="col-8">
+    <div class="col-9">
       <div>{{ utilisateur?.email }}</div>
       <div>{{ utilisateur?.telephone }}</div>
       <div>{{ utilisateur?.adresse }}, {{ utilisateur?.codePostal }} {{ utilisateur?.ville?.nom }}</div>
     </div>
-    <div class="col-4">
+    <div class="col-3">
       <button class="btn btn-secondary text-light btn-block"
               data-toggle="modal" data-target="#popupInfos">Modifier mes informations</button>
     </div>
   </div>
 </div>
 
-<div class="container mt-4">
+<div class="container mt-3 bordure-paragraphe">
   <div class="row">
-    <div class="col-8">
+    <div class="col-9">
       <h5>Description</h5>
     </div>
-    <div class="col-4">
+    <div class="col-3">
       <button class="btn btn-secondary text-light btn-block"
               *ngIf="utilisateur?.description !== ' ' && utilisateur?.description !== ''"
               data-toggle="modal" data-target="#popupDescription">Modifier la description</button>
@@ -43,20 +43,20 @@
   </div>
 </div>
 
-<div class="container mt-4">
+<div class="container mt-3 bordure-paragraphe">
   <div class="row">
-    <div class="col-8">
+    <div class="col-9">
       <h5>Mes voitures</h5>
     </div>
-    <div class="col-4">
+    <div class="col-3">
       <button class="btn btn-secondary text-light btn-block"
               data-toggle="modal" data-target="#popupVoiture">Ajouter une voiture</button>
     </div>
   </div>
   <ul class="list-group list-group-flush">
-    <li class="row list-group-item" *ngFor="let voiture of utilisateur?.voitures" [hidden]="!voiture.active">
+    <li class="row list-group-item" *ngFor="let voiture of utilisateur?.voitures; let a = index" [hidden]="!voiture.active">
       <div class="col">
-        <button type="button" class="close">
+        <button type="button" class="close" (click)="onDesactiver(a)">
           <span>&times;</span>
         </button>
         <span>{{ voiture.modele }} </span>
@@ -70,7 +70,7 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col">
-      <button class="btn btn-secondary text-light"
+      <button class="btn btn-success"
               data-toggle="modal" data-target="#popupMdp">Changer de mot de passe</button>
     </div>
   </div>
@@ -167,11 +167,12 @@
             <label for="mdpNouveau2">Confirmez le nouveau mot de passe</label>
             <input type="password" id="mdpNouveau2" name="mdpNouveau2" class="form-control" ngModel required>
           </div>
+          <div *ngIf="erreurMdp" class="text-secondary">Vous avez mal recopié votre nouveau mot de passe</div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary text-light" data-dismiss="modal">Annuler</button>
           <button type="submit" class="btn btn-success"
-                  data-toggle="modal" data-target="#popupMdp">Enregistrer</button>
+                  data-target="#popupMdp">Enregistrer</button>
         </div>
       </form>
     </div>
@@ -218,9 +219,10 @@
           </div>
           <div class="form-group">
             <label for="commune">Commune</label>
-            <select id="commune" name="commune" class="form-control" ngModel required [disabled]="!codeOk">
+            <select id="commune" name="commune" class="form-control" [ngModel]="ville" required [disabled]="!codeOk">
+              <option [ngValue]="ville" selected disabled>{{ville?.nom}}</option>
               <option *ngFor="let ville of villes" [ngValue]="ville"
-                      [selected]="ville.code===utilisateur.ville.code">{{ ville.nom }}</option>
+                      [selected]="ville.code.toString()===utilisateur.ville.code.toString()">{{ ville.nom }}</option>
             </select>
           </div>
           <div class="form-group">

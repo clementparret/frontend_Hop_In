@@ -10,6 +10,8 @@ import {UtilisateurService} from "../services/utilisateur.service";
 })
 export class ConnexionComponent implements OnInit {
 
+  erreur: boolean = false;
+
   constructor(private utilisateurService: UtilisateurService,
               private router: Router) { }
 
@@ -24,7 +26,7 @@ export class ConnexionComponent implements OnInit {
         this.router.navigate(['/espace/informations']);
       })
       .catch((err) => {
-        alert('Erreur lors de la connexion');
+        this.erreur = true;
       })
   }
 

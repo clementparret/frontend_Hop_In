@@ -36,6 +36,7 @@ export class TrajetsFutursComponent implements OnInit {
       .then(
         (utilisateur: any) => {
           this.utilisateur = utilisateur;
+          console.log(utilisateur._id)
           this.liste = this.trajetService.trierListe(utilisateur, false);
           if (resetSelectionne) {
             this.selectionne = this.liste[0];
@@ -65,6 +66,10 @@ export class TrajetsFutursComponent implements OnInit {
     let nbPlaces = this.nbOccurencesPipe.transform(this.selectionne.trajets[trajetIndex].candidats, utilisateurId);
     this.trajetService.refuserCandidat(this.selectionne.trajets[trajetIndex]._id, utilisateurId, nbPlaces)
       .then(res => this.chargerPage(false));
+  }
+
+  onDesistement() {
+
   }
 
 }
