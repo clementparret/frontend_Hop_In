@@ -36,8 +36,7 @@ export class TrajetsFutursComponent implements OnInit {
       .then(
         (utilisateur: any) => {
           this.utilisateur = utilisateur;
-          console.log(utilisateur._id)
-          this.liste = this.trajetService.trierListe(utilisateur, false);
+          this.liste = this.trajetService.trierListe(utilisateur, true);
           if (resetSelectionne) {
             this.selectionne = this.liste[0];
           } else {
@@ -47,6 +46,7 @@ export class TrajetsFutursComponent implements OnInit {
           console.log(this.liste)
         })
       .catch((err) => {
+        console.log(err)
         console.log('Erreur lors de l\'initialisation de la page');
       });
   }

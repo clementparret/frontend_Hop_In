@@ -131,7 +131,7 @@ export class TrajetService {
     });
   }
 
-  trierListe(utilisateur: Utilisateur, historique: boolean): any {
+  trierListe(utilisateur: Utilisateur, futur: boolean): any {
     let liste;
     liste = utilisateur.trajetsParticipant.concat(utilisateur.trajetsCandidat);
     liste = liste.concat(utilisateur.deplacements);
@@ -142,31 +142,40 @@ export class TrajetService {
         return true;
       }
     });
+    liste = liste.filter(item => {
+      if (!futur && !item.date && (item.refuses.includes(utilisateur._id) || item.candidats.includes(utilisateur._id))) {
+        return false;
+      } else {
+        return true;
+      }
+    })
     const maintenant = new Date()
     liste = liste.filter(item => {
       if (item.hasOwnProperty('dateArrivee')) {
-        if (item.dateArrivee > maintenant) {
-          if (historique) {
+        let itemDate = new Date(item.dateArrivee);
+        if (itemDate.getTime() > maintenant.getTime()) {
+          if (futur) {
             return true;
           } else {
             return false;
           }
         } else {
-          if (historique) {
+          if (futur) {
             return false;
           } else {
             return true;
           }
         }
       } else {
-        if (item.trajets[item.trajets.length-1].dateArrivee > maintenant) {
-          if (historique) {
+        let itemDate = new Date(item.trajets[item.trajets.length-1].dateArrivee);
+        if (itemDate.getTime() > maintenant.getTime()) {
+          if (futur) {
             return true;
           } else {
             return false;
           }
         } else {
-          if (historique) {
+          if (futur) {
             return false;
           } else {
             return true;
@@ -175,21 +184,7 @@ export class TrajetService {
       }
     })
     liste.sort((a,b) => {
-      if (historique) {
-        if (a.hasOwnProperty('dateDepart')) {
-          if (b.hasOwnProperty('dateDepart')) {
-            return (a.dateDepart > b.dateDepart) ? -1 : 1;
-          } else {
-            return (a.dateDepart > b.trajets[0].dateDepart) ? -1 : 1;
-          }
-        } else {
-          if (b.hasOwnProperty('dateDepart')) {
-            return (a.trajets[0].dateDepart > b.dateDepart) ? -1 : 1;
-          } else {
-            return (a.trajets[0].dateDepart > b.trajets[0].dateDepart) ? -1 : 1;
-          }
-        }
-      } else {
+      if (futur) {
         if (a.hasOwnProperty('dateDepart')) {
           if (b.hasOwnProperty('dateDepart')) {
             return (a.dateDepart < b.dateDepart) ? -1 : 1;
@@ -201,6 +196,20 @@ export class TrajetService {
             return (a.trajets[0].dateDepart < b.dateDepart) ? -1 : 1;
           } else {
             return (a.trajets[0].dateDepart < b.trajets[0].dateDepart) ? -1 : 1;
+          }
+        }
+      } else {
+        if (a.hasOwnProperty('dateDepart')) {
+          if (b.hasOwnProperty('dateDepart')) {
+            return (a.dateDepart > b.dateDepart) ? -1 : 1;
+          } else {
+            return (a.dateDepart > b.trajets[0].dateDepart) ? -1 : 1;
+          }
+        } else {
+          if (b.hasOwnProperty('dateDepart')) {
+            return (a.trajets[0].dateDepart > b.dateDepart) ? -1 : 1;
+          } else {
+            return (a.trajets[0].dateDepart > b.trajets[0].dateDepart) ? -1 : 1;
           }
         }
       }

@@ -22,6 +22,7 @@ import {DatePipe} from "@angular/common";
 import { RechercheComponent } from './recherche/recherche.component';
 import { TrajetsFutursComponent } from './trajets-futurs/trajets-futurs.component';
 import {NbOccurencesPipe} from "./pipes/nbOccurences.pipe";
+import { HistoriqueComponent } from './historique/historique.component';
 
 const appRoutes: Routes = [
   { path: '', component: AccueilComponent },
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
     children: [
       { path: 'informations', canActivate: [AuthGuard], component: InformationsComponent },
       { path: 'trajets', canActivate: [AuthGuard], component: TrajetsFutursComponent },
+      { path: 'historique', canActivate: [AuthGuard], component: HistoriqueComponent },
     ]},
 ]
 
@@ -49,6 +51,7 @@ const appRoutes: Routes = [
     RechercheComponent,
     TrajetsFutursComponent,
     NbOccurencesPipe,
+    HistoriqueComponent,
   ],
   imports: [
     BrowserModule,
