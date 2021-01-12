@@ -14,6 +14,11 @@ export class MembreService{
   constructor(private router: Router,
               private http: HttpClient) {}
 
+  /**
+   * Envoie une requête HTTP pour inscrire un membre
+   * @param membre le membre à inscrire
+   * @param ville la ville de résidence du membre
+   */
   inscrireMembreAction(membre: Utilisateur, ville: Ville) {
     return new Promise((resolve, reject) => {
       this.http.post(
@@ -33,6 +38,11 @@ export class MembreService{
     });
   }
 
+  /**
+   * Envoie une requête HTTP pour modifier la description d'un membre donné
+   * @param utilisateurId id de l'utilisateur concerné
+   * @param description nouvelle description
+   */
   modifierDescriptionAction(utilisateurId: string, description: string) {
     return new Promise((resolve, reject) => {
       this.http.post(
@@ -52,6 +62,11 @@ export class MembreService{
     });
   }
 
+  /**
+   * Envoie une requête HTTP pour modifier les informations d'un membre donné
+   * @param utilisateurId id de l'utilisateur concerné
+   * @param formulaire formulaire contenant les nouvelles informations
+   */
   modifierMembreAction(utilisateurId: string, formulaire: any) {
     return new Promise((resolve, reject) => {
       this.http.post(
@@ -79,6 +94,11 @@ export class MembreService{
     });
   }
 
+  /**
+   * Envoie une requête HTTP pour ajouter une voiture à la liste de véhicule d'un membre donné
+   * @param utilisateurId id du membre concerné
+   * @param voiture voiture à enregistrer
+   */
   ajouterVoitureAction(utilisateurId: string, voiture: Voiture) {
     return new Promise((resolve, reject) => {
       this.http.post(
@@ -97,6 +117,10 @@ export class MembreService{
     });
   }
 
+  /**
+   * Envoie une requête HTTP pour désactiver une voiture donnée
+   * @param voitureId id de la voiture concernée
+   */
   desactiverVoitureAction(voitureId: string) {
     return new Promise((resolve, reject) => {
       this.http.post(

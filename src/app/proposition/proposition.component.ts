@@ -30,6 +30,9 @@ export class PropositionComponent implements OnInit {
               private router: Router,
               private datepipe: DatePipe) { }
 
+  /**
+   * Initialise le component
+   */
   ngOnInit(): void {
     this.initialiserFormulaire();
     let aujourdhui = new Date();
@@ -44,6 +47,9 @@ export class PropositionComponent implements OnInit {
       });
   }
 
+  /**
+   * Initialise le formulaire de proposition de trajet
+   */
   initialiserFormulaire() {
     this.formulaire = this.formBuilder.group({
       nbPlaces: [ 2, [Validators.required, Validators.max(4), Validators.min(1)]],
@@ -69,6 +75,9 @@ export class PropositionComponent implements OnInit {
     this.getPrix().push(controlePrix);
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre essaie de proposer un déplacement
+   */
   onSubmit() {
     const valeurs = this.formulaire.value;
     for (let i = 0; i < valeurs.etapes.length; i++) {
@@ -79,7 +88,7 @@ export class PropositionComponent implements OnInit {
       date.setMinutes(minutes);
       valeurs.etapes[i].heure = date;
     }
-    //Vérifier si il faut créer une voiture
+    //TODO Vérifier si il faut créer une voiture
     this.trajetService.proposerDeplacement(valeurs, this.auth.utilisateurId)
       .then((res) => {
         this.router.navigate(['/espace/informations']);
@@ -89,10 +98,16 @@ export class PropositionComponent implements OnInit {
       });
   }
 
+  /**
+   * Fonction appelée lorsque le membre souhaite passer à la deuxième partie du formulaire
+   */
   onSuivant() {
     this.partie1 = true;
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre souhaite ajouter une étape à son déplacement
+   */
   onAjouterEtape() {
     const etape = this.formBuilder.group({
       ville: [null, [Validators.required, VilleValidator]],
@@ -107,6 +122,10 @@ export class PropositionComponent implements OnInit {
     this.nbVilles++;
   }
 
+  /**
+   * Méthode appelée lorsqu'un membre modifie un champ de saisie de la ville, modifie les propositions d'autocomplétion
+   * @param index indique dans quel champ aller chercher la chaine de caractère rentrée par l'utilisateur
+   */
   onChangementVille(index) {
     let value = this.formulaire.value.etapes[index].ville;
     this.villeService.rechercherVilleParNomAction(value)
@@ -118,6 +137,10 @@ export class PropositionComponent implements OnInit {
       });
   }
 
+  /**
+   * Renvoie un texte de la forme "nomVille (codeDepartement)" pour une ville donnée
+   * @param ville la ville à afficher
+   */
   affichageVille(ville) {
     let texte = '';
     if (ville) {

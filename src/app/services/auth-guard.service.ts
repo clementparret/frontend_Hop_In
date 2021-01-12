@@ -9,6 +9,11 @@ export class AuthGuard implements CanActivate {
   constructor(private utilisateurService: UtilisateurService,
               private router: Router) { }
 
+  /**
+   * Restreint l'accès à certaines pages aux utilisateurs connectés
+   * @param route
+   * @param state
+   */
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {

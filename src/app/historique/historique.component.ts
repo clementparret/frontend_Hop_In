@@ -19,15 +19,26 @@ export class HistoriqueComponent implements OnInit {
               private trajetService: TrajetService,
               private membreService: MembreService) { }
 
+  /**
+   * Initialise le component
+   */
   ngOnInit(): void {
     this.chargerPage(true);
   }
 
+  /**
+   * Fonction appelée lors du clic sur un trajet, affiche les informations détaillées
+   * @param i index du trajet cliqué
+   */
   onClickTrajet(i) {
     this.selectionne = this.liste[i];
     console.log(this.selectionne)
   }
 
+  /**
+   * Fonction responsable du chargement de la page
+   * @param resetSelectionne
+   */
   chargerPage(resetSelectionne: boolean) {
     this.auth.rechercherUtilisateurParIdAction()
       .then(

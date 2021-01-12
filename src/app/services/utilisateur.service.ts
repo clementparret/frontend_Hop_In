@@ -15,6 +15,11 @@ export class UtilisateurService {
   constructor(private router: Router,
               private http: HttpClient) {}
 
+  /**
+   * Envoie une requête HTTP pour authentifier un utilisateur
+   * @param email
+   * @param motDePasse
+   */
   authentifierUtilisateurAction(email: string, motDePasse: string) {
     return new Promise((resolve, reject) => {
       this.http.post(
@@ -37,6 +42,9 @@ export class UtilisateurService {
     });
   }
 
+  /**
+   * Envoie une requête HTTP pour récupérer les informations d'un utilisateur donné
+   */
   rechercherUtilisateurParIdAction() {
     return new Promise((resolve, reject) => {
       this.http.get(
@@ -52,12 +60,19 @@ export class UtilisateurService {
     })
   }
 
+  /**
+   * gère la déconnexion d'un utilisateur
+   */
   deconnecter() {
     this.isAuth = false;
     this.isAdmin = false;
     this.utilisateurId = null;
   }
 
+  /**
+   * Envoie une requête HTTP pour vérifeir que le mot de passe saisi correspond à un utilisateur donné
+   * @param motDePasse
+   */
   verifierMotDePasseAction(motDePasse: string) {
     return new Promise((resolve, reject) => {
       this.http.post(
@@ -74,6 +89,10 @@ export class UtilisateurService {
     })
   }
 
+  /**
+   * Envoie une requête HTTP pour modifier le mot de passe d'un utilisateur donné
+   * @param motDePasse le nouveau mot de passe
+   */
   changerMotDePasseAction(motDePasse: string) {
     return new Promise((resolve, reject) => {
       this.http.post(

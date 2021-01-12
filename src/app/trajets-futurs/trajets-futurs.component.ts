@@ -22,15 +22,26 @@ export class TrajetsFutursComponent implements OnInit {
               private nbOccurencesPipe: NbOccurencesPipe,
               private membreService: MembreService) { }
 
+  /**
+   * Initialise le component
+   */
   ngOnInit(): void {
     this.chargerPage(true);
   }
 
+  /**
+   * Fonction appelée lors du clic sur un trajet, affiche les informations détaillées
+   * @param i index du trajet cliqué
+   */
   onClickTrajet(i) {
     this.selectionne = this.liste[i];
     console.log(this.selectionne)
   }
 
+  /**
+   * Fonction responsable du chargement de la page
+   * @param resetSelectionne
+   */
   chargerPage(resetSelectionne: boolean) {
     this.auth.rechercherUtilisateurParIdAction()
       .then(
@@ -51,17 +62,30 @@ export class TrajetsFutursComponent implements OnInit {
       });
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre annule un de ses déplacements
+   */
   onAnnuler() {
     this.trajetService.annulerDeplacement(this.selectionne._id)
       .then(res => this.chargerPage(true));
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre accepte un candidat sur un de ses trajets
+   * @param trajetIndex index du trajet sur lequel on accepte le candidat
+   * @param utilisateurId id du membre dont on accepte la candidature
+   */
   onAccepter(trajetIndex: number, utilisateurId: string) {
     let nbPlaces = this.nbOccurencesPipe.transform(this.selectionne.trajets[trajetIndex].candidats, utilisateurId);
     this.trajetService.accepterCandidat(this.selectionne.trajets[trajetIndex]._id, utilisateurId, nbPlaces)
       .then(res => this.chargerPage(false));
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre refuse un candidat sur un de ses trajets
+   * @param trajetIndex index du trajet sur lequel on refuse le candidat
+   * @param utilisateurId id du membre dont on refuse la candidature
+   */
   onRefuser(trajetIndex: number, utilisateurId: string) {
     let nbPlaces = this.nbOccurencesPipe.transform(this.selectionne.trajets[trajetIndex].candidats, utilisateurId);
     this.trajetService.refuserCandidat(this.selectionne.trajets[trajetIndex]._id, utilisateurId, nbPlaces)

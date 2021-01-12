@@ -21,6 +21,10 @@ export class VilleService{
 
   // Liaison avec API Géo
 
+  /**
+   * Recherche toutes les villes associées à un code postal donné
+   * @param codePostal
+   */
   rechercherVilleParCodePostalAction(codePostal: string) {
     return new Promise((resolve, reject) => {
       this.http.get(
@@ -41,6 +45,10 @@ export class VilleService{
     })
   }
 
+  /**
+   * Recherche la ville associée au code donné
+   * @param code
+   */
   rechercherVilleParCodeAction(code: string) {
     return new Promise((resolve, reject) => {
       this.http.get(
@@ -60,6 +68,10 @@ export class VilleService{
     })
   }
 
+  /**
+   * Recherche toutes les villes comprenant la chaine de caractère donnée en paramètre
+   * @param nom
+   */
   rechercherVilleParNomAction(nom: string) {
     return new Promise((resolve, reject) => {
       this.http.get(
@@ -80,6 +92,9 @@ export class VilleService{
     })
   }
 
+  /**
+   * Trie les villes par population décroissante
+   */
   trierVilles() {
     this.villes.sort((a, b) => (a.population > b.population) ? -1 : 1);
   }

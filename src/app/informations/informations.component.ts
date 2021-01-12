@@ -29,6 +29,9 @@ export class InformationsComponent implements OnInit {
               private villeService: VilleService,
               private membreService: MembreService) { }
 
+  /**
+   * Initialise le component
+   */
   ngOnInit(): void {
     this.auth.rechercherUtilisateurParIdAction()
       .then(
@@ -56,6 +59,10 @@ export class InformationsComponent implements OnInit {
       });
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre valide la modification de sa description
+   * @param form formulaire rempli par le membre
+   */
   onModifDescription(form: NgForm) {
     const description = form.value['description'];
     this.membreService.modifierDescriptionAction(this.auth.utilisateurId, description)
@@ -67,6 +74,10 @@ export class InformationsComponent implements OnInit {
       });
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre ajoute un voiture à sa liste de véhicules
+   * @param form formulaire rempli par le membre
+   */
   onAjouterVoiture(form: NgForm) {
     let voiture = new Voiture;
     voiture.modele = form.value['modele'];
@@ -82,6 +93,10 @@ export class InformationsComponent implements OnInit {
       })
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre essaie de changer de mot de passe
+   * @param form formulaire rempli par le membre
+   */
   onChangerMdp(form: NgForm) {
     const mdpActuel = form.value['mdpActuel'];
     const mdpNouveau1 = form.value['mdpNouveau1'];
@@ -106,6 +121,10 @@ export class InformationsComponent implements OnInit {
     }
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre modifie ses informations
+   * @param form formulaire rempli par le membre
+   */
   onChangerInfos(form: NgForm) {
     this.membreService.modifierMembreAction(this.auth.utilisateurId, form.value)
       .then( res => {
@@ -118,6 +137,9 @@ export class InformationsComponent implements OnInit {
       });
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre modifie son code postal
+   */
   onChangementCode() {
     if (this.code.length === 5) {
       this.villeService.rechercherVilleParCodePostalAction(this.code)
@@ -137,6 +159,10 @@ export class InformationsComponent implements OnInit {
     }
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre désactive une de ses voitures
+   * @param index index de la voiture à désactiver
+   */
   onDesactiver(index: number) {
     let voitureId = this.utilisateur.voitures[index]._id;
     this.membreService.desactiverVoitureAction(voitureId)

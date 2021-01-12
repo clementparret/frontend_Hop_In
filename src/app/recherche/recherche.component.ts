@@ -32,6 +32,9 @@ export class RechercheComponent implements OnInit {
               private router: Router,
               private datepipe: DatePipe) { }
 
+  /**
+   * Initialise le component
+   */
   ngOnInit(): void {
     this.isAuth = this.auth.isAuth;
     this.utilisateurId = this.auth.utilisateurId;
@@ -40,6 +43,9 @@ export class RechercheComponent implements OnInit {
     this.demain = this.datepipe.transform(aujourdhui.setDate(aujourdhui.getDate()+1), 'yyyy-MM-dd');
   }
 
+  /**
+   * Initialise le formulaire de recherche de trajet
+   */
   initialiserFormulaire() {
     this.formulaire = this.formBuilder.group({
       villeDepart: [null, [Validators.required, VilleValidator]],
@@ -49,6 +55,10 @@ export class RechercheComponent implements OnInit {
     });
   }
 
+  /**
+   * Fonction appelée lors de la modification d'un champ de saisie d'un nom de ville
+   * @param depart indique si le changement a lieu dans le champ dédié à la ville de départ
+   */
   onChangementVille(depart: boolean) {
     let value;
     if (depart) {
@@ -65,6 +75,10 @@ export class RechercheComponent implements OnInit {
       });
   }
 
+  /**
+   * Renvoie un texte de la forme "nomVille (codeDepartement)" pour une ville donnée
+   * @param ville la ville à afficher
+   */
   affichageVille(ville) {
     let texte = '';
     if (ville) {
@@ -73,6 +87,9 @@ export class RechercheComponent implements OnInit {
     return texte;
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre valide sa recherche de trajet
+   */
   onSubmit() {
     const valeurs = this.formulaire.value;
     this.trajetService.rechercherTrajets(valeurs)
@@ -86,11 +103,18 @@ export class RechercheComponent implements OnInit {
       });
   }
 
+  /**
+   * Fonction appelée lors du clic sur un trajet, affiche les informations détaillées
+   * @param i index du trajet cliqué
+   */
   onClickTrajet(i) {
     this.selectionne = this.resultats[i];
     console.log(this.selectionne)
   }
 
+  /**
+   * Fonction appelée lorsqu'un membre candidate à un trajet
+   */
   onCandidater() {
     this.trajetService.candidater(this.auth.utilisateurId, this.selectionne._id, this.nbPlaces)
       .then((res) => {

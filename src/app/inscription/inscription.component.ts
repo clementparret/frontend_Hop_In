@@ -26,6 +26,10 @@ export class InscriptionComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Fonction appelée lorsqu'un visiteur essaie de s'inscrire
+   * @param form formulaire rempli par le visiteur
+   */
   onSubmit(form: NgForm) {
     let membre = new Utilisateur;
     let ville = new Ville;
@@ -55,6 +59,9 @@ export class InscriptionComponent implements OnInit {
     }
   }
 
+  /**
+   * Fonction appelée lorsque le code postal est modifié, met à jour la liste des villes associées
+   */
   onChangementCode() {
     if (this.code.length === 5) {
       this.villeService.rechercherVilleParCodePostalAction(this.code)

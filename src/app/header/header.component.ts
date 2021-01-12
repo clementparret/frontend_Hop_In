@@ -15,11 +15,17 @@ export class HeaderComponent implements OnInit {
   constructor(private auth: UtilisateurService,
               private router: Router) { }
 
+  /**
+   * Initialise le component
+   */
   ngOnInit(): void {
     this.isAuth = this.auth.isAuth;
     this.url = this.router.url;
   }
 
+  /**
+   * Fonction appelée lors d'une tentative de déconnexion
+   */
   onDeconnexion() {
     this.auth.deconnecter();
     this.router.navigate(['']);

@@ -18,6 +18,10 @@ export class ConnexionComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Fonction appelée lors d'une tentative de connexion
+   * @param form le formulaire rempli par l'utilisateur
+   */
   onSubmit(form: NgForm) {
     const email = form.value['email'];
     const motDePasse = form.value['motDePasse'];
